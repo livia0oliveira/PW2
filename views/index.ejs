@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+
+    <form id="cepForm">
+      <div>
+        <label for="fmatricula">Matricula:</label>
+        <input type="text" id="fmatricula" name="fmatricula">
+      </div>
+
+      <div>
+        <label for="fnome">Nome:</label>
+        <input type="text" id="fnome" name="fnome">
+      </div>
+
+      <div>
+        <label for="fcep">CEP:</label>
+        <input type="text" id="fcep" name="fcep">
+        <button type="button" id="conferircep">Confirmar</button>
+      </div>
+      
+      <div>
+        <label for="fendereco">Endereço:</label>
+        <input type="text" id="fendereco" name="fendereco" readonly>
+      </div>
+      
+      <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+      document.getElementById('conferircep').addEventListener('click', function(event) {
+        event.preventDefault(); // Previne o envio do formulário
+
+        const cep = document.getElementById('fcep').value;
+
+        if (cep) {
+          axios.post('/confirmar', {
+            fcep: cep
+          })
+          .then(function(response) {
+            if (response.data.erro) {
+              alert('CEP inválido!');
+            } else {
+              const endereco = response.data.logradouro + ', ' + response.data.bairro + ', ' + response.data.localidade + ' - ' + response.data.uf;
+              document.getElementById('fendereco').value = endereco;
+            }
+          })
+          .catch(function(error) {
+            console.error('Erro ao buscar o CEP:', error);
+            alert('Erro ao buscar o CEP. Tente novamente.');
+          });
+        } else {
+          alert('Por favor, insira um CEP válido.');
+        }
+      });
+    </script>
+  </body>
+</html>
