@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <style>
+      td.senha-col {
+        max-width: 200px;
+      }
+
+      .senha-wrapper {
+        overflow-x: auto;
+        white-space: nowrap;
+        max-width: 100%;
+      }
+    </style>
+
+  </head>
+  <body>
+    <header class="container d-flex align-items-center my-3">
+      <h1 class="mb-0"><%= title %></h1>
+      <a href="/add" class="btn btn-primary ms-auto">Adicionar</a>
+    </header>
+
+    <div class="container">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Senha</th>
+              <th>Criado em</th>
+              <th>Atualizado em</th>
+              <th>Editar</th>
+              <th>Deletar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% lista.forEach((item) => { %>
+              <tr>
+                <th scope="row"><%= item.id %></th>
+                <td><%= item.nome %></td>
+                <td><%= item.email %></td>
+                <td class="senha-col">
+                  <div class="senha-wrapper"><%= item.senha %></div>
+                </td>
+                <td><%= item.createdAt %></td>
+                <td><%= item.updatedAt %></td>
+                <td>
+                  <form action="/edit" method="post">
+                    <input type="hidden" name="id" value="<%= item.id %>">
+                    <button type="submit" class="btn btn-warning">Editar</button>
+                  </form>
+                </td>
+                <td>
+                  <form action="/delete" method="post">
+                    <input type="hidden" name="id" value="<%= item.id %>">
+                    <button type="submit" class="btn btn-danger">Remover</button>
+                  </form>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lf
